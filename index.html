@@ -1,0 +1,114 @@
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Hızlı Marangoz</title>
+    <meta name="theme-color" content="#4f46e5">
+    <link rel="icon" type="image/svg+xml" href="/icon.svg">
+    <link rel="apple-touch-icon" href="/icon.svg">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --sat: env(safe-area-inset-top);
+            --sab: env(safe-area-inset-bottom);
+        }
+        body { 
+          font-family: 'Inter', sans-serif; 
+          background-color: #FFF8E8; /* brand-100 */
+          color: #674636; /* brand-900 */
+          overscroll-behavior-y: contain;
+          -webkit-tap-highlight-color: transparent;
+        }
+        ::-webkit-scrollbar {
+            display: none;
+        }
+        * {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        button:active {
+            transform: scale(0.96);
+        }
+
+        /* 3D Performans */
+        .preserve-3d {
+            transform-style: preserve-3d;
+            backface-visibility: hidden;
+        }
+
+        /* EK-01: Bitiş karesi "transform: none" olmalı — kalıcı transform,
+           içerideki position:fixed modalların ekrana göre değil kapsayıcıya
+           göre konumlanmasına yol açıyordu. Görüntü birebir aynı kalır. */
+        @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(10px); }
+          to { opacity: 1; transform: none; }
+        }
+        .animate-fadeIn {
+          animation: fadeIn 0.4s ease-out forwards;
+        }
+
+        @keyframes slideUp {
+          from { opacity: 0; transform: translateY(20px); }
+          to { opacity: 1; transform: none; }
+        }
+        .animate-slideUp {
+          animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        /* Input Autofill fix */
+        input:-webkit-autofill,
+        input:-webkit-autofill:hover, 
+        input:-webkit-autofill:focus, 
+        input:-webkit-autofill:active{
+            -webkit-box-shadow: 0 0 0 30px #F7EED3 inset !important;
+            -webkit-text-fill-color: #674636 !important;
+            transition: background-color 5000s ease-in-out 0s;
+        }
+
+        /* PDF ve Yazdırma Ayarları */
+        @media print {
+            body, html, #root, main {
+                background-color: white !important;
+                color: black !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+                width: 100% !important;
+                height: auto !important;
+                overflow: visible !important;
+                display: block !important;
+                position: static !important;
+            }
+            #root {
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+            main {
+                padding: 0 !important;
+                margin: 0 !important;
+                overflow: visible !important;
+            }
+            .print-shadow-none {
+                box-shadow: none !important;
+                border-color: #000 !important;
+            }
+            /* Yazdırma sırasında gizlenmesi gereken elementler */
+            header, aside, .bottom-nav, .print\:hidden {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+<script type="module" src="/index.tsx"></script>
+</body>
+</html>

@@ -1,0 +1,42 @@
+uygulama içine entegre edilmek üzere, tamamen sunucusuz (offline/local) çalışacak bir "2D Dünyası Kesim Optimizasyonu (Cutlist Optimizer)" motoru yazmanı istiyorum. Bütün hesaplamalar yerel olarak Python backend içinde dönecek ve çıktı olarak doğrudan SVG formatında görsel şema üretecektir.
+
+Aşağıdaki teknik gereksinimlere ve mimariye sadık kalarak bana eksiksiz bir Python modülü hazırlar mısın?
+
+### 1. TEKNİK ALTYAPI VE KÜTÜPHANELER
+- Dil: Python 3
+- Optimizasyon için hazır kütüphane: 'rectpack' veya 'guillotine' mantığına uygun açık kaynaklı bir kütüphane algoritması (eğer saf Python ile giyotin kesim yazacaksan, MaxRects/Guillotine Split algoritmasını temel al).
+- Görselleştirme: Hiçbir harici GUI kütüphanesine (Tkinter, PyQt vb.) bağımlı olmadan, yerleşimi doğrudan standart bir SVG (Scalable Vector Graphics) metni (string) olarak üretsin. Uygulama bu SVG'yi alıp ekranda gösterecek.
+
+### 2. GİRDİ PARAMETRELERİ (INPUT)
+Algoritma fonksiyonu şu verileri bir sözlük (dictionary) veya nesne olarak kabul etmelidir:
+- Stok Levhalar (Stock Sheets): Genişlik (W), Yükseklik (H), Adet (Miktar). Çoklu levha desteği olmalı (parçalar ilk levhaya sığmazsa otomatik diğer levhaya geçmeli).
+- Kesilecek Parçalar (Panels/Demands): Genişlik (w), Yükseklik (h), Adet, Döndürülebilir mi? (Allow Rotation: True/False)(default olarak true olacak).
+- Bıçak Kalınlığı (Kerf / Blade Thickness): mm cinsinden kesim esnasında yok olan pay (Örn: 3mm).
+
+### 3. ALGORİTMA KURALLARI
+- Kesimler "Giyotin Kesim" (Guillotine Cut) mantığına uygun olmalı. Yani bir kesim çizgisi levhayı baştan sona dümdüz kesmelidir (içeride sarmal veya yarım kalan kesimler olamaz).
+- Eğer parçanın 'Döndürülebilir' ayarı False ise, ahşap desen yönü (grain direction) korunmalı, parça kesinlikle 90 derece çevrilmemelidir.
+- Bıçak payı (Kerf), yerleştirilen her parçanın sağ ve alt sınırına bir boşluk olarak eklenerek hesaplanmalıdır.
+
+### 4. ÇIKTI PARAMETRELERİ (OUTPUT & SVG)
+Fonksiyon çalıştıktan sonra geriye şu verileri dönmelidir:
+- Başarı Durumu: Tüm parçalar sığdı mı, yoksa artan parça kaldı mı?
+- İstatistikler: Toplam kullanılan levha sayısı, Toplam fire oranı (%), Toplam kullanılan alan (m²).
+- SVG Grafiği: Her bir levha için ayrı bir <svg> şeması . SVG içinde:
+  * Ana levha sınırları net olmalı.
+  * Kesilen parçalar farklı renklerde dikdörtgenler (`<rect>`) olarak çizilmeli.
+  * Her parçanın üzerine boyutları (Örn: "400x600") text olarak yazılmalı.
+  * Fire (atık) kalan alanlar gri veya taralı olarak gösterilmeli.
+
+Lütfen bu yapıyı temiz, modüler, nesne yönelimli (OOP) ve uygulamanın içine doğrudan import edilip fonksiyon çağrısıyla (Örn: `optimize_cutlist(data)`) çalışacak şekilde, yorum satırlarıyla birlikte tek bir Python scripti olarak oluştur.
+
+
+
+
+75.2 x 60 = 2 ADET
+70 x 32 = 2 ADET
+61.4 x 32 = 2 ADET
+61.4 x 32 = 2 ADET
+60 x 60 = 1 ADET
+56.4 x 10 = 2 ADET
+56.4 x 60 = 1 ADET
